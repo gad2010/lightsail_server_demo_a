@@ -16,7 +16,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 script {
-                    sh 'terraform init --no-color'
+                    sh 'terraform init -no-color'
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
         stage('Terraform Validate') {
             steps {
                 script {
-                    sh 'terraform validate --no-color'
+                    sh 'terraform validate -no-color'
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
         stage('Terraform Format') {
             steps {
                 script {
-                    sh 'terraform fmt -check --no-color'
+                    sh 'terraform fmt -check -no-color'
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 script {
-                    sh 'terraform plan --no-color'
+                    sh 'terraform plan -no-color'
                 }
             }
         }
@@ -49,7 +49,7 @@ pipeline {
             steps {
                 script {
                     // Optional: Confirm apply only if needed (e.g., manual approval)
-                    sh 'terraform apply --auto-approve --no-color'
+                    sh 'terraform apply --auto-approve -no-color'
                 }
             }
         }
