@@ -12,6 +12,6 @@ resource "aws_lightsail_instance" "gitlab_test" {
     Created_by= "Terraform"
   }
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }
 }

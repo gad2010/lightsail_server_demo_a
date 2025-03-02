@@ -41,6 +41,7 @@ pipeline {
             steps {
                 script {
                     sh 'terraform plan -no-color'
+                    
                 }
             }
         }
@@ -49,7 +50,7 @@ pipeline {
             steps {
                 script {
                     // Optional: Confirm apply only if needed (e.g., manual approval)
-                    sh 'terraform apply --auto-approve -no-color'
+                    sh 'terraform destroy --auto-approve -no-color'
                 }
             }
         }
