@@ -1,86 +1,72 @@
 pipeline {
     agent any
-
+/*
+    environment {
+        TF_VERSION = '1.4.0'  // Specify your required Terraform version here
+        TF_WORKSPACE = 'default'  // Specify the workspace name if needed
+    }
+*/
     stages {
-        // Stage 1: Checkout Code
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                checkout scm // Checkout the source code from SCM (e.g., Git)
+                checkout scm
             }
         }
 
-        // Stage 2: Terraform Init
         stage('Terraform Init') {
             steps {
-                sh '''
-                    terraform init -input=false --no-color
-                '''
-            }
-        }
-
-        // Stage 3: Terraform Validate
-        stage('Terraform Validate') {
-            steps {
-                sh '''
-                    terraform validate  --no-color
-                '''
-            }
-        }
-
-        // Stage 4: Terraform Plan
-        stage('Terraform Plan') {
-            steps {
-                sh '''
-                    terraform plan -out=tfplan -input=false  --no-color
-                '''
-            }
-        }
-/*
-        // Stage 5: Terraform Apply (Manual Approval)
-        stage('Terraform Apply') {
-            steps {
                 script {
-                    // Prompt for manual approval before applying changes
-                    def userInput = input(
-                        id: 'userInput', 
-                        message: 'Apply Terraform changes?', 
-                        parameters: [
-                            [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply changes?', name: 'Apply']
-                        ]
-                    )
-                    if (userInput) {
-                        sh '''
-                            terraform apply -input=false tfplan
-                        '''
-                    } else {
-                        echo 'Terraform apply canceled by user.'
-                    }
+                    sh 'terraform init --no-color'
                 }
             }
         }
 
-        // Stage 6: Cleanup
-        stage('Cleanup') {
+        stage('Terraform Validate') {
             steps {
-                sh '''
-                    rm -rf tfplan
-                '''
+                script {
+                    sh 'terraform validate --no-color'
+                }
+            }
+        }
+
+        stage('Terraform Format') {
+            steps {
+                script {
+                    sh 'terraform fmt -check --no-color'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                script {
+                    sh 'terraform plan --no-color'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                script {
+                    // Optional: Confirm apply only if needed (e.g., manual approval)
+                    sh 'terraform apply --auto-approve --no-color'
+                }
             }
         }
     }
 
     post {
-        // Post-build actions
-        success {
-            echo 'Terraform pipeline completed successfully!'
-        }
-        failure {
-            echo 'Terraform pipeline failed. Check the logs for details.'
-        }
         always {
-            echo 'Cleaning up workspace...'
-            cleanWs() // Clean the Jenkins workspace
+            // Clean up or report errors if necessary
+            echo 'Terraform pipeline finished'
         }
-        */
+
+        success {
+            echo 'Terraform apply successful'
+        }
+
+        failure {
+            echo 'Terraform pipeline failed'
+        }
     }
 }
