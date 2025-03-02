@@ -13,7 +13,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 sh '''
-                    terraform init -input=false
+                    terraform init -input=false --no-color
                 '''
             }
         }
@@ -22,7 +22,7 @@ pipeline {
         stage('Terraform Validate') {
             steps {
                 sh '''
-                    terraform validate
+                    terraform validate  --no-color
                 '''
             }
         }
@@ -31,7 +31,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 sh '''
-                    terraform plan -out=tfplan -input=false
+                    terraform plan -out=tfplan -input=false  --no-color
                 '''
             }
         }
