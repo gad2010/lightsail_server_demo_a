@@ -1,6 +1,6 @@
 # Create a new GitLab Lightsail Instance
 resource "aws_lightsail_instance" "gitlab_test" {
-  name              = "custom_gitlab"
+  name              = "Gitlab_Runner"
   availability_zone = "us-east-1b"
   blueprint_id      = "amazon_linux_2"
   bundle_id         = "nano_3_0"
