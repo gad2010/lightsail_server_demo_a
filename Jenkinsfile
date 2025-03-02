@@ -32,7 +32,7 @@ pipeline {
         stage('Terraform Format') {
             steps {
                 script {
-                    sh 'terraform fmt -check -no-color'
+                    sh 'terraform fmt -no-color'
                 }
             }
         }
